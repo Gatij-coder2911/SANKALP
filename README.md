@@ -6,6 +6,17 @@
 
 ---
 
+### 🛠 Tech Stack
+
+<p align="center">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original-wordmark.svg" width="80" style="margin-right: 50px;"/>
+  <img width="80"  alt="icons8-flask-120" src="https://github.com/user-attachments/assets/ed059a84-728d-4a23-8e62-0e0942a3853b" style="margin-right: 50px;"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original-wordmark.svg" width="80"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original-wordmark.svg" width="80"/>
+</p>
+
+---
+
 ## 📌 Features
 
 - 🔍 **Smart Legal Search Engine** powered by NLP
