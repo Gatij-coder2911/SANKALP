@@ -5,6 +5,8 @@ import ReactMarkdown from 'react-markdown';
 import axios from "axios"; // Import axios for API calls
 import "./Dashboard.css";
 import Search from "../Components/Search";
+// Import icons
+import { FaBookmark, FaComments, FaFileAlt } from 'react-icons/fa';
 
 const Dashboard = () => {
     const { username, logout } = useContext(UserContext); 
@@ -103,13 +105,22 @@ const Dashboard = () => {
                                         <h1 className="heading">Library</h1>
                                         <div>
                                             <button className="ccard" onClick={gotolibrary}>
-                                                <h2 className='ccard-title'>Saved Summary</h2>
+                                                <div className="ccard-content">
+                                                    <FaBookmark className="ccard-icon" />
+                                                    <h2 className='ccard-title'>Saved Summary</h2>
+                                                </div>
                                             </button>
                                             <button className="ccard" onClick={gotolibrary}>
-                                                <h2 className='ccard-title'>Saved Chats</h2>
+                                                <div className="ccard-content">
+                                                    <FaComments className="ccard-icon" />
+                                                    <h2 className='ccard-title'>Saved Chats</h2>
+                                                </div>
                                             </button>
                                             <button className="ccard" onClick={gotolibrary}>
-                                                <h2 className='ccard-title'>Generated Docs</h2>
+                                                <div className="ccard-content">
+                                                    <FaFileAlt className="ccard-icon" />
+                                                    <h2 className='ccard-title'>Generated Docs</h2>
+                                                </div>
                                             </button>
                                         </div>
                                     </div>

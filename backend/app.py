@@ -45,17 +45,13 @@ click_chat = {"query":"", "summary":""}
 
 @app.route('/')
 def index():
-    """Render the main search page."""
-    return render_template('index.html')
-
+    """Redirect to the Home page handled by React frontend."""
+    return redirect('/Home')
 
 merged_query=""
 @app.route('/search_and_summarize', methods=['GET'])
 def search_and_summarize():
-    # data = request.get_json()
-    # query = data.get('query')
     query = request.args.get('query')
-
     search_results = get_google_search_results(query)
 
     links = []
@@ -67,32 +63,37 @@ def search_and_summarize():
         link = item.get('link')
         links.append({"title": title, "link": link})
 
-        # Print each link separately
         print(f"Link: {link} | Title: {title}")
 
         html_content = fetch_page_content(link)
-
         if "Failed to fetch content" in html_content:
             print(f"Skipping {title}: Failed to fetch content")
             continue
 
-        # Prepare content for summary
-        query_title = "title: " + query 
-        html_content =  html_content
-        content_for_summary = summarizer_system_prompt + query_title + "\n " + html_content
-        
-        # Extract visible text and combine it
-        visible_text = extract_text_from_html(content_for_summary)
-        combined_content += f"\n{visible_text}\n"
+        # Extract visible text first, then combine
+        visible_text = extract_text_from_html(html_content)
+        combined_content += f"\n--- Content from {title} ---\n{visible_text}\n"
 
         site_count += 1
         if site_count >= 5:
             break
 
-    # Generate summary
-    summarized_text = summarize_with_gemini(combined_content)
+    # Construct proper prompt with actual content
+    final_prompt = f"""
+    {summarizer_system_prompt.replace('[brief context of the text]', f'commercial court research on: {query}')
+                              .replace('[title or subject of the text]', query)
+                              .replace('[desired length, e.g., one paragraph]', 'three paragraphs')
+                              .replace('[specific points or topics covered in the text]', 'legal precedents, court procedures, and relevant regulations')}
+    
+    Content to summarize:
+    {combined_content}
+    
+    Please provide a comprehensive summary focusing on commercial court matters related to: {query}
+    """
 
-    # Print summary separately
+    # Generate summary
+    summarized_text = summarize_with_gemini(final_prompt)
+
     print(f"Summary: {summarized_text}")
 
     response_data = {
@@ -101,13 +102,13 @@ def search_and_summarize():
         "summary": summarized_text.strip("`json ")
     }
 
-    
     global click_chat, merged_query
     click_chat['query'] = query
     click_chat['summary'] = summarized_text.strip("`json")
-
-    merged_query = chat_system_prompt + click_chat['query'] + click_chat['summary'] # Always generate a merged query
+    merged_query = chat_system_prompt + " Query: " + click_chat['query'] + " Context: " + click_chat['summary']
+    
     return jsonify(response_data)
+
 
 # chat_system_prompt = chat_system_prompt+ click_chat['summary']
 

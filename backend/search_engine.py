@@ -126,11 +126,12 @@ def generate_document_with_gemini(prompt):
                     {"text": prompt}
                 ]
             }
-        ]
+        ],
+        "model": "gemini-1.5-flash-latest"
     }
 
     try:
-        response = requests.post(GEMINI_API_URL, headers=headers, json=data)
+        response = requests.post(GEMINI_API_URL, headers=headers, json=data, timeout=30)
         response.raise_for_status()
         response_data = response.json()
 

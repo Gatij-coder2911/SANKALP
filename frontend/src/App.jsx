@@ -2,7 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Navbar from './Components/Navbar/Navbar';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { UserProvider } from './Pages/UserContext'; // Corrected import path
 import Home from './Pages/Dashboard';
 import Main from './Pages/Home';
@@ -24,6 +24,7 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
+          <Route path="/" element={<Navigate to="/Home" replace />} />
           <Route path="/dashboard" element={<Home />} />
           <Route path="/library" element={<Library />} />
           <Route path="/history" element={<History />} />
